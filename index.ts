@@ -9,7 +9,7 @@ const piatti = document.querySelector(".piatti") as HTMLElement;
 const listaOrdini: Piatto[] = JSON.parse(localStorage.getItem('ordini')!) || [];
 
 aggiungiPiatti.addEventListener("submit", aggiungiPiatto);
-
+aggiungiPiatti.addEventListener("click", rimuoviPiatti);
 
 function aggiungiPiatto(this: any,event: Event){
     event.preventDefault();
@@ -22,7 +22,12 @@ function aggiungiPiatto(this: any,event: Event){
     popolaLista();
     localStorage.setItem("ordini", JSON.stringify(listaOrdini));
     this.reset();
+}
 
+function rimuoviPiatti(){
+    localStorage.removeItem("ordini");
+    listaOrdini.length = 0;
+    popolaLista(); 
 }
 
 function popolaLista(){

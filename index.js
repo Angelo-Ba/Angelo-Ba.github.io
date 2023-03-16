@@ -3,6 +3,7 @@ const aggiungiPiatti = document.querySelector(".aggiungi-piatto");
 const piatti = document.querySelector(".piatti");
 const listaOrdini = JSON.parse(localStorage.getItem('ordini')) || [];
 aggiungiPiatti.addEventListener("submit", aggiungiPiatto);
+aggiungiPiatti.addEventListener("click", rimuoviPiatti);
 function aggiungiPiatto(event) {
     event.preventDefault();
     const nome = (this.querySelector('[name="piatto"]')).value;
@@ -14,6 +15,11 @@ function aggiungiPiatto(event) {
     popolaLista();
     localStorage.setItem("ordini", JSON.stringify(listaOrdini));
     this.reset();
+}
+function rimuoviPiatti() {
+    localStorage.removeItem("ordini");
+    listaOrdini.length = 0;
+    popolaLista();
 }
 function popolaLista() {
     piatti.innerHTML = listaOrdini.map((ordine, index) => {
