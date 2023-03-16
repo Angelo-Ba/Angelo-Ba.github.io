@@ -5,17 +5,18 @@ interface Piatto {
 }
 
 const aggiungiPiatti = document.querySelector(".aggiungi-piatto") as HTMLFormElement;
+const remPiatti = document.querySelector(".rimuovi-piatti") as HTMLElement;
 const piatti = document.querySelector(".piatti") as HTMLElement;
 const listaOrdini: Piatto[] = JSON.parse(localStorage.getItem('ordini')!) || [];
 
 aggiungiPiatti.addEventListener("submit", aggiungiPiatto);
-aggiungiPiatti.addEventListener("click", rimuoviPiatti);
+remPiatti.addEventListener("click", rimuoviPiatti);
 
-function aggiungiPiatto(this: any,event: Event){
+function aggiungiPiatto(this: any, event: Event) {
     event.preventDefault();
     const nome = (this.querySelector('[name="piatto"]')).value;
     const piatto = {
-        nome, 
+        nome,
         portato: false
     }
     listaOrdini.push(piatto);
@@ -23,19 +24,32 @@ function aggiungiPiatto(this: any,event: Event){
     localStorage.setItem("ordini", JSON.stringify(listaOrdini));
     this.reset();
 }
+/*
+function rimuoviPiatto(this: any,event: Event){
+    event.preventDefault();
+    const nome = (this.querySelector('[name="piatto"]')).value;
+    const piatto = {
+        nome, 
+        portato: false
+    }
+    listaOrdini.(piatto);
+    popolaLista();
+    localStorage.removeItem("ordini");
+    this.reset();
+}*/
 
-function rimuoviPiatti(){
+function rimuoviPiatti() {
     localStorage.removeItem("ordini");
     listaOrdini.length = 0;
-    popolaLista(); 
+    popolaLista();
 }
 
-function popolaLista(){
+function popolaLista() {
     piatti.innerHTML = listaOrdini.map((ordine, index) => {
         return `
         <li>
-        <input type= "checkbox" data-index="${index}" id="item${index}" ${ordine.portato ? 'checked': ''} />
-        <label for="item${index}">${ordine.nome}</label>
+        <input type= "checkbox" data-index="${index}" id="item${index}" ${ordine.portato ? 'checked' : ''} />
+        <label for="item${index}">${ordine.nome} </label>    
         </li>
         `
     }).join('')
@@ -43,10 +57,10 @@ function popolaLista(){
 
 piatti.addEventListener("click", togglePortato);
 
-function togglePortato(event: MouseEvent){
+function togglePortato(event: MouseEvent) {
     const el = event.target! as HTMLLIElement;
 
-    if(el.matches('input')){
+    if (el.matches('input')) {
         const index = Number(el.dataset.index!);
 
         listaOrdini[index].portato = !listaOrdini[index].portato;
